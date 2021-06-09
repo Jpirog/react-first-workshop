@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+  <body>
+    <h1>
+      Exercise 3
+    </h1>
+    <div id="root"></div>
+    <script type='text/babel'>
+      class App extends React.Component{
+        constructor(){ 
+          super();
+          this.state = {
+            productName: [faker.company.companyName()] 
+          }
+          this.addProduct = this.addProduct.bind(this);
+          this.deleteProduct = this.deleteProduct.bind(this);
+        }
+        addProduct(){
+          const products = [...this.state.productName, faker.company.companyName()]
+          this.setState({productName: products})
+        }
+        deleteProduct(idx){
+          const newProds = this.state.productName.filter((c,i) => i !== idx)
+          this.setState({productName: newProds})
+        }
+        render(){
+          return (
+            <div><h1>Some products</h1>
+              <button onClick={this.addProduct}>Add</button>
+              <ul>
+                { this.state.productName.map((c,i) => {
+                  return (
+                    <li key={i}>{ c }
+                      <button onClick={() => this.deleteProduct(i)}> Delete Me </button>
+                    </li>
+                  );
+                })
+              }
+                </ul>
+              </div>
+          )
+          return React.createElement('h1', null, this.state.productName)
+        }
+      }
+      const root = document.querySelector('#root')
+      ReactDOM.render(React.createElement(App), root);
+    </script>
+  </body>
+</html>

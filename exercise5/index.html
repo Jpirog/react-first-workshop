@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+      *{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+      button{
+        background-color: blanchedalmond;
+        margin: 0;
+        width: 25rem;
+      }
+      label{
+        font-weight: bold;
+      }
+      select{
+        width: 25rem;
+      }
+      h1, h2{
+        text-align: center;
+      }
+      hr{
+        height: 13px;
+        background: black;
+      }
+      .black{
+        background-color: black;
+      }
+      .blue{
+        background-color: blue;
+      }
+      .green{
+        background-color: green;
+      }
+      .pink{
+        background-color: pink;
+      }
+      .red{
+        background-color: red;
+      }
+      .yellow{
+        background-color: yellow;
+      }
+      .boxparent{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      .box{
+        border: 1px solid black;
+        flex: 1;
+        padding: 5px;
+        color: white;
+        text-align: center;
+      }
+      .selected{
+        border: 3px dashed black;
+        flex: 2;
+        color:black;
+        font-style: italic;
+        font-weight: bold;
+        animation-name: flash;
+        animation-duration: 0.2s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-play-state: running;
+      }
+      @keyframes flash {
+        from {color: red;}
+        to {color: black;} 
+      }
+    </style>
+    </head>
+  <body>
+    <h1>
+      Exercise 5
+    </h1>
+    <div id="root"></div>
+
+    <script type='text/babel'>
+
+      class App extends React.Component{
+        constructor(){ 
+          super();
+          this.state = {
+            boxes: ['red','blue','green'],
+            selectedBox: 2
+          }
+          this.addBox = this.addBox.bind(this);
+          this.setSelected = this.setSelected.bind(this);
+        }
+        setSelected(newSelected){
+          console.log("SET SELECTED", newSelected)
+          this.setState({selectedBox: newSelected})
+        }
+        addBox(){
+          const newColor = document.querySelector('#color').value
+          const newBoxes = [...this.state.boxes, newColor]
+          this.setState({
+            boxes: newBoxes, 
+            selectedBox: newBoxes.length-1
+          })
+        }
+        render(){
+          return (
+            <div>
+              <div><h1>Boxes with Colors!</h1>
+                <label htmlFor="color">Choose a color for your new box:</label>
+                <p />
+                <select name="color" id="color">
+                  <option value="black">Black</option>
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                  <option value="pink">Pink</option>
+                  <option value="red">Red</option>
+                  <option value="yellow">Yellow</option>
+                </select>
+                <p />
+                <button onClick={this.addBox}>Add a new box</button>
+                <p />
+                <hr />
+                <p />
+              </div>
+              <Boxes state={this.state} passedFunction={this.setSelected}/>
+            </div>
+          )
+        }
+      }
+      
+      const Boxes = (props) => {
+        const setSelected = props.passedFunction;
+        const boxes = props.state.boxes;
+        const selectedBox = props.state.selectedBox;
+
+        console.log("part 2",props)
+        console.log("part 2",boxes, selectedBox)
+        return ( 
+          <div className='boxparent' >
+            { boxes.map ((c,i) => {
+                let classes='box ' + c;
+                if (i === selectedBox){
+                  classes = classes + ' selected';
+                }
+                return (
+                  <div  key={i} className={ classes } onClick={() => setSelected(i)}>
+                    { c }
+                  </div>
+                )
+              })
+            }
+          </div>
+          )
+      }
+
+      const root = document.querySelector('#root')
+      ReactDOM.render(React.createElement(App), root);
+    </script>
+  </body>
+</html>

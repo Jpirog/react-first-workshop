@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+    </head>
+  <body>
+    <h1>
+      Exercise 1
+    </h1>
+    <div id="root"></div>
+    <script>
+      class App extends React.Component{
+        constructor(){
+          super();
+          this.state = {
+            productName: 'first'
+          }
+          setInterval(() => {
+            this.setState({productName:faker.commerce.product()})
+          }, 2000)
+        }
+        render(){
+          return React.createElement('h1', null, this.state.productName)
+        }
+      }
+      const root = document.querySelector('#root')
+      ReactDOM.render(React.createElement(App), root);
+    </script>
+  </body>
+</html>
